@@ -28,12 +28,16 @@ int main(int argc, char *argv[]) {
 
     // Get the text and shift amount from the command-line arguments
     char *text = argv[1];
-    int shift = atoi(argv[2]);
+    char *endptr;
+    int shift = strtol(argv[2], &endptr, 10);
+    
+    if (*endptr != '\0') {
+        printf("Error: Invalid shift value\n");
+        return 1;
+    }
 
     // Handle negative shifts by converting them to equivalent positive shifts
-    if (shift < 0) {
-        shift = (shift % 26) + 26;
-    }
+    shift = (shift % 26 + 26) % 26;
 
     // Encrypt the text using the Caesar cipher
     caesar_cipher(text, shift);
@@ -43,3 +47,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
